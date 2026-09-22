@@ -30,6 +30,33 @@ the hours table and in the structured data simultaneously. That is the point of
 the generator: NAP drift across pages is the most common defect on small
 business sites, and here it is structurally impossible.
 
+## Preview site
+
+    python preview.py
+
+Builds a separate copy into `docs/`, which GitHub Pages serves at
+**https://vitalsigndigital.github.io/churchill-medical-preview/**
+
+This is *not* the production build, and differs in three deliberate ways:
+
+- **Every page is `noindex, nofollow`.** A preview must never compete with the
+  clinic's real site in search. Churchill's canonical tags still point at a
+  placeholder domain, so a crawlable preview would be canonicalising to a host
+  that may not exist.
+- **The enquiry form is rendered inert**, with a notice saying why. Pages serves
+  static files and cannot execute `contact.php`; without this, pressing Send
+  would offer to *download* the PHP file.
+- **`contact.php`, `.htaccess`, `sitemap.xml` and `llms.txt` are omitted.** None
+  of them do anything on Pages, and a sitemap for a noindex site is a mixed
+  signal.
+
+`robots.txt` in the preview deliberately **allows** crawling. `Disallow` would
+stop crawlers ever reading the `noindex`, and a blocked URL can still be indexed
+from a bare link — allow + noindex is what actually keeps a staging site out.
+
+`package.py` excludes `docs/` from the HostGator zip, so the preview can never
+be uploaded to production by accident.
+
 ## Checks
 
 ```

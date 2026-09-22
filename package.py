@@ -38,8 +38,11 @@ REQUIRED = [
 ]
 
 EXCLUDE_EXT = {".py", ".md", ".pyc"}
-EXCLUDE_NAMES = {".gitignore", ".DS_Store", "Thumbs.db"}
-EXCLUDE_DIRS = {"__pycache__", "seo", ".git", ".claude"}
+EXCLUDE_NAMES = {".gitignore", ".gitattributes", ".DS_Store", "Thumbs.db"}
+# docs/ is the GitHub Pages preview (noindex, form disabled). It must never
+# reach the production upload — it would ship a duplicate, noindexed copy
+# of the whole site inside public_html.
+EXCLUDE_DIRS = {"__pycache__", "seo", ".git", ".claude", "docs"}
 
 
 def collect():
