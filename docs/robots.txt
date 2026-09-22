@@ -1,0 +1,5 @@
+# Design preview of Churchill Medical Clinic — not the live site.
+# Crawling is permitted so that the noindex directive on every page is
+# actually seen. Disallow would hide the noindex and achieve the opposite.
+User-agent: *
+Allow: /

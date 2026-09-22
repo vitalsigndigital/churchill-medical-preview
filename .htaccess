@@ -1,0 +1,218 @@
+# ============================================================================
+# Churchill Medical Clinic — Apache configuration for HostGator shared hosting
+#
+# READ THIS FIRST
+# ---------------
+# Section 1 (the http->https and www canonical redirects) ships COMMENTED OUT
+# on purpose. Enabling it before DNS points at HostGator and the SSL
+# certificate has been issued will:
+#   - redirect every visitor to https:// on a host with no valid certificate,
+#     which shows a full-page browser security warning instead of the site; and
+#   - redirect HostGator's temporary preview URL to the live domain, so you
+#     cannot check the upload before going live.
+#
+# So: upload everything, test on the temporary URL, point DNS, confirm
+# https://yourdomain/ loads with a padlock, and only THEN uncomment section 1.
+# Running  python set_domain.py yourdomain.ca  does this for you.
+#
+# Every module-dependent directive below is wrapped in <IfModule> so that a
+# module missing on your account degrades gracefully instead of returning a
+# 500 and taking the whole clinic site offline.
+# ============================================================================
+
+
+# ---------------------------------------------------------------------------
+# 1. CANONICAL HOST AND HTTPS  — disabled until DNS + SSL are confirmed
+#
+#    To enable: delete the leading "# " from the lines between the START and
+#    END markers, and replace BOTH occurrences of REPLACE-WITH-YOUR-DOMAIN
+#    with the real host, exactly as it appears in the site's canonical tags.
+#
+#    The two rules are deliberately separate. mod_rewrite's [OR] binds tighter
+#    than the implicit AND, so a combined condition cannot also test the
+#    proxy header, and a proxy that terminates TLS upstream (Cloudflare in
+#    Flexible mode, for example) would otherwise cause an infinite redirect.
+#
+#    They ship as R=302 (temporary). A 301 is cached by browsers more or less
+#    permanently and cannot be withdrawn, so only switch to R=301 once the
+#    final domain is settled and verified.
+# ---------------------------------------------------------------------------
+# --- START canonical block ---
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#
+#   # Never redirect HostGator preview hosts, bare IPs, or /~username paths,
+#   # so the site stays testable before DNS propagates.
+#   RewriteCond %{HTTP_HOST} !(hostgator\.com|websitewelcome\.com)$ [NC]
+#   RewriteCond %{HTTP_HOST} !^[0-9.]+$
+#   RewriteCond %{REQUEST_URI} !^/~
+#   RewriteCond %{HTTPS} !=on
+#   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=302,L]
+#
+#   RewriteCond %{HTTP_HOST} !(hostgator\.com|websitewelcome\.com)$ [NC]
+#   RewriteCond %{HTTP_HOST} !^[0-9.]+$
+#   RewriteCond %{REQUEST_URI} !^/~
+#   RewriteCond %{HTTP_HOST} !^REPLACE-WITH-YOUR-DOMAIN(:[0-9]+)?$ [NC]
+#   RewriteRule ^(.*)$ https://REPLACE-WITH-YOUR-DOMAIN/$1 [R=302,L]
+# </IfModule>
+# --- END canonical block ---
+
+
+# ---------------------------------------------------------------------------
+# 2. DEFAULT DOCUMENT AND ERROR PAGE
+#    The leading slash resolves against the vhost root. If this site is ever
+#    installed in a SUBFOLDER (an addon domain at public_html/churchill/, or
+#    the /~username/ preview path), change this to the matching path or the
+#    404 page will itself 404.
+# ---------------------------------------------------------------------------
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+
+
+# ---------------------------------------------------------------------------
+# 3. NO DIRECTORY LISTINGS
+#    IndexIgnore is used rather than "Options -Indexes" because Options is a
+#    core directive that cannot be wrapped in <IfModule>; if the account's
+#    AllowOverride excludes Options, that line 500s every request.
+# ---------------------------------------------------------------------------
+<IfModule mod_autoindex.c>
+  IndexIgnore *
+</IfModule>
+
+
+# ---------------------------------------------------------------------------
+# 4. MIME TYPES
+#    Declared explicitly in case the server default is missing them. Every
+#    photograph on this site is WebP, so a missing type means the browser
+#    offers to download the hero image instead of displaying it.
+# ---------------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType image/webp                   .webp
+  AddType image/svg+xml                .svg .svgz
+  AddType image/x-icon                 .ico
+  AddType application/manifest+json    .webmanifest
+  AddType text/plain                   .txt
+  AddDefaultCharset UTF-8
+</IfModule>
+
+
+# ---------------------------------------------------------------------------
+# 5. COMPRESSION
+#    Text formats only. WebP, JPEG and PNG are already compressed; running
+#    them through deflate costs CPU and saves nothing.
+# ---------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE application/rss+xml image/svg+xml
+</IfModule>
+
+
+# ---------------------------------------------------------------------------
+# 6. CACHING
+#
+#    site.css and site.js are requested with a ?v=<content hash> that the build
+#    regenerates whenever either file changes, so they are safe to cache hard:
+#    a changed file is always a changed URL.
+#
+#    Images are NOT content-hashed — hero-consultation-1280.webp keeps its name
+#    when the clinic swaps in its own photography — so they get 30 days, not a
+#    year. A year would mean a replaced photo never reaching returning visitors.
+#
+#    HTML is deliberately short. The opening hours live in the markup, and
+#    stale hours on a walk-in clinic send patients to a closed door.
+# ---------------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                        "access plus 1 hour"
+  ExpiresByType text/html               "access plus 10 minutes"
+  ExpiresByType text/plain              "access plus 10 minutes"
+  ExpiresByType application/xml         "access plus 10 minutes"
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType image/webp              "access plus 30 days"
+  ExpiresByType image/jpeg              "access plus 30 days"
+  ExpiresByType image/png               "access plus 30 days"
+  ExpiresByType image/svg+xml           "access plus 30 days"
+  ExpiresByType image/x-icon            "access plus 30 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header always set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|jpe?g|png|gif|svg|ico)$">
+    Header always set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(html|txt|xml)$">
+    Header always set Cache-Control "public, max-age=600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+
+# ---------------------------------------------------------------------------
+# 7. THE FORM HANDLER MUST NEVER BE CACHED
+#    contact.php answers with a 302, and a 302 carrying explicit freshness is
+#    cacheable. Without this, a second enquiry can be answered from cache and
+#    never reach the clinic at all.
+# ---------------------------------------------------------------------------
+<FilesMatch "\.php$">
+  <IfModule mod_expires.c>
+    ExpiresActive Off
+  </IfModule>
+  <IfModule mod_headers.c>
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header always set Pragma "no-cache"
+  </IfModule>
+</FilesMatch>
+
+
+# ---------------------------------------------------------------------------
+# 8. SECURITY HEADERS
+#    No Content-Security-Policy is set. The pages load a Google Fonts
+#    stylesheet and carry one small inline <script>, so a CSP would need
+#    careful allowances for both; a wrong one silently breaks the site's
+#    typography and its mobile menu. Add one deliberately or not at all.
+# ---------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+  Header onsuccess unset X-Powered-By
+  Header always unset X-Powered-By
+</IfModule>
+
+
+# ---------------------------------------------------------------------------
+# 9. KEEP NON-PUBLIC FILES NON-PUBLIC
+#    The upload package excludes the build scripts and internal documentation
+#    already. This is the second line of defence for the day somebody uploads
+#    the whole working folder by hand.
+# ---------------------------------------------------------------------------
+<FilesMatch "\.(py|pyc|md|json|lock|ini|log|bak|sql|sh)$">
+  Require all denied
+</FilesMatch>
+
+<FilesMatch "^(\.|composer|package|yarn|Dockerfile|Makefile)">
+  Require all denied
+</FilesMatch>
+
+# .htaccess itself
+<Files ".htaccess">
+  Require all denied
+</Files>
+
+
+# ---------------------------------------------------------------------------
+# 10. MISCELLANEOUS
+# ---------------------------------------------------------------------------
+# Stop Apache advertising the exact directory listing of a 404'd path
+ServerSignature Off
+
+# UTF-8 for anything served without an explicit charset
+<IfModule mod_mime.c>
+  AddCharset UTF-8 .html .css .js .txt .xml .svg
+</IfModule>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 205" fill="none" role="img" aria-label="Caduceus">
+  <g fill="currentColor">
+    <g id="wing">
+      <path d="M57 29 C43 21 26 14 7 10 C18 19 30 26 44 33 Z"/>
+      <path d="M57 35 C44 29 28 24 11 22 C22 29 34 35 47 39 Z"/>
+      <path d="M57 41 C45 37 32 34 18 33 C28 40 39 43 49 46 Z"/>
+      <path d="M57 47 C47 45 36 44 26 44 C34 49 42 51 50 53 Z"/>
+    </g>
+    <use href="#wing" transform="translate(120,0) scale(-1,1)"/>
+    <circle cx="60" cy="18" r="9"/>
+    <path d="M56.6 26 h6.8 v145 l-3.4 24 -3.4 -24 Z"/>
+    <ellipse cx="30" cy="60" rx="8.8" ry="6.1" transform="rotate(25 30 60)"/>
+    <ellipse cx="90" cy="60" rx="8.8" ry="6.1" transform="rotate(-25 90 60)"/>
+  </g>
+  <g stroke="currentColor" stroke-width="7.4" stroke-linecap="round" fill="none">
+    <path d="M35 63 C52 71 84 86 84 106 C84 126 36 126 36 146 C36 166 84 166 84 179"/>
+    <path d="M85 63 C68 71 36 86 36 106 C36 126 84 126 84 146 C84 166 36 166 36 179"/>
+  </g>
+</svg>

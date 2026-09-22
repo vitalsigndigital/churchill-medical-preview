@@ -1,0 +1,7 @@
+# Python bytecode — regenerable
+__pycache__/
+*.pyc
+
+# Internal agency task file. Kept private in the workspace repo, never published
+# here: it records engagement status and commercial notes.
+TASKS.md

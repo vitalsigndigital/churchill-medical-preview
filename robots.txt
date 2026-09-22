@@ -1,0 +1,8 @@
+# Churchill Medical Clinic
+# Default-allow. AI crawlers are welcome: being read and cited accurately is
+# the point of publishing clinic hours and services in plain HTML.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.churchillmedicalclinic.ca/sitemap.xml
