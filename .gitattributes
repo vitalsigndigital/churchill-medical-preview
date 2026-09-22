@@ -1,0 +1,8 @@
+# Keep everything LF in the repository and in the working copy. The site is
+# deployed to Linux/Apache, and .htaccess in particular is happier without CRLF.
+* text=auto eol=lf
+
+*.webp binary
+*.png  binary
+*.jpg  binary
+*.zip  binary
