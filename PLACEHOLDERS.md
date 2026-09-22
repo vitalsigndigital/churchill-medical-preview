@@ -53,17 +53,35 @@ Verify at `register.cpso.on.ca/physician-info/?cpsonum=80153` and `…=82475`.
 
 ### The hours conflict, in full
 
-| Source | Mon–Fri | Sat | Sun |
-|---|---|---|---|
-| **Peel Region 211** (record MHL0405) — *used in the build* | 9am–7pm | 9am–3pm | Closed |
-| Medimap | 9am–8pm | 9am–3pm | Closed |
-| Doctr | 10am–8pm | 10am–4pm | 10am–4pm |
+**Re-verified against the live sources on 2026-09-22.** An earlier version of
+this register attributed hours of "Mon-Fri 9am-8pm" to Medimap. That was wrong:
+it came from a search-engine summary paragraph, not from Medimap, and Medimap
+publishes no hours at all. Corrected below. Nothing should be attributed to a
+directory without opening the directory.
 
-Peel 211 was chosen because it is the municipal record and its Saturday and
-Sunday agree with Medimap. Peel 211 also notes the clinic may close up to
-30 minutes before the posted time, which is why every page carries "hours can
-change, please call before you travel" and the walk-in page says the clinic may
-stop registering patients shortly before closing.
+| Source | What it actually publishes | Age |
+|---|---|---|
+| **Peel Region 211** (record MHL0405) — *used in the build* | One string, verbatim: `Mon-Fri 9am-7pm * Sat 9am-3pm * may stop accepting patients 30 minutes prior to closing`. **Sunday is not mentioned at all** — it is absent, not declared closed. | Last Modified **and** Last Full Update both **10 Feb 2020** |
+| **Medimap** | **No hours whatsoever.** The page shows "Clinic Hours" followed by "Hours not available" and "call for operating hours". A grep of the full 362 KB page returns zero time strings. | undated |
+| **Doctr** | **Contradicts itself.** The visible page lists Mon-Fri 10:00am-8:00pm and Sat-Sun 10:00am-4:00pm. Its own JSON-LD `openingHoursSpecification` — the part Google reads — says 09:00-17:00 for *all seven days*, including Sunday. | undated |
+
+So the clinic's online presence is not merely inconsistent: the most detailed
+record is six and a half years old and pre-COVID, a major walk-in discovery
+platform lists no hours at all, and the booking platform disagrees with its own
+machine-readable data.
+
+**These may not all be measuring the same thing.** Peel 211 describes a
+"walk-in medical clinic with associated family practice"; Doctr is an
+appointment-booking platform whose "clinic hours" may reflect bookable slots
+rather than door-open times. The discrepancy is evidence that nobody is
+maintaining these listings, not proof that any one of them is wrong.
+
+Peel 211 was chosen for the build because it is the municipal record and the
+only source that states walk-in hours explicitly. Its 30-minutes-before-closing
+caveat is why every page carries "hours can change, please call before you
+travel" and the walk-in page says the clinic may stop registering patients
+shortly before closing. **The Sunday "Closed" on the site is our inference from
+Peel 211's silence, not a sourced fact — confirm it.**
 
 **Hours are stored in three places and all three must be changed together:**
 `build.py` → `HOURS_ROWS`, `assets/js/site.js` → `HOURS`, and the

@@ -14,7 +14,7 @@
 - [ ] After launch: re-run the W3C validator and a Lighthouse pass against the live origin (both were run against the local build only).
 
 ## Waiting on client
-- [ ] **Opening hours — blocking for accuracy.** Three public sources disagree: Peel 211 says Mon–Fri 9am–7pm / Sat 9am–3pm (used in the build); Medimap says Mon–Fri 9am–8pm; Doctr says Mon–Fri 10am–8pm and Sat–Sun 10am–4pm. Confirm the real hours. They appear in `build.py` (`HOURS_ROWS`), `assets/js/site.js` (`HOURS`) and the JSON-LD — all three must match.
+- [ ] **Opening hours — blocking for accuracy.** Re-verified live 2026-09-22: Peel 211 (used in the build) says `Mon-Fri 9am-7pm * Sat 9am-3pm * may stop accepting patients 30 minutes prior to closing` and **never mentions Sunday** — its record was last updated **10 Feb 2020**. **Medimap publishes no hours at all.** Doctr's visible page says Mon–Fri 10am–8pm / Sat–Sun 10am–4pm while its own JSON-LD says 9am–5pm every day. Confirm the real hours with the clinic; also confirm Sunday, since the site's "Closed" is our inference from Peel's silence. They appear in `build.py` (`HOURS_ROWS`), `assets/js/site.js` (`HOURS`) and the JSON-LD — all three must match.
 - [ ] Confirm the services list on `services.html` is accurate and complete, and whether anything listed is not actually offered.
 - [ ] **Psychiatry** — Cortico lists the clinic as offering psychiatrist as well as family doctor services. Single source, so it was deliberately left off the site. Confirm before adding.
 - [ ] Confirm whether the practice is accepting new family practice patients (the site currently tells people to phone and ask, which is safe either way).
@@ -26,6 +26,9 @@
 - [ ] Confirm French is or is not spoken (Cortico lists it; CPSO records only English + Arabic + Burmese, so French was excluded).
 
 ## Done
+- [x] 2026-09-22 — **Caught a fabricated source attribution in my own records.** `PLACEHOLDERS.md` credited Medimap with "Mon–Fri 9am–8pm"; Medimap in fact publishes no hours at all. The figure came from a search-engine summary, not the directory. Re-fetched all three sources live and corrected the register: Peel 211 is a **10 Feb 2020** record that never mentions Sunday, Medimap has no hours, and Doctr's visible page contradicts its own JSON-LD (9am–5pm, seven days). Nothing is attributed to a directory now without having opened it.
+- [x] 2026-09-22 — Re-ran the W3C Nu validator against **all 13 pages** (thank-you.html had been added after the original 12-page run and never validated): 0 errors, 0 warnings.
+- [x] 2026-09-22 — Added a preview-only disclaimer bar to every `docs/` page: the preview URL is public and carries the clinic's name, address, telephone and both physicians' CPSO numbers, so it now states plainly that it is not the clinic's website and has not been approved.
 - [x] 2026-09-22 — **Published a client preview** at https://vitalsigndigital.github.io/churchill-medical-preview/ and put the project in its own public repo (matching the `deca-health-preview` / `rahat-foundation` convention). All 13 pages verified live, custom 404 serving a real 404 status, WebP served as `image/webp`, no console errors.
 - [x] 2026-09-22 — Added `preview.py`: builds a separate `docs/` copy that is `noindex` on every page with the PHP form rendered inert, and omits `contact.php`/`.htaccess`/`sitemap.xml`/`llms.txt`. The preview's robots.txt deliberately *allows* crawling, since Disallow would stop crawlers reading the noindex and achieve the opposite.
 - [x] 2026-09-22 — **`TASKS.md` is excluded from the public repo** (it records engagement status) but stays tracked in the private workspace repo via a gitignore negation, so the internal record survives without being published.

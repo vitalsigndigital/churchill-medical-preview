@@ -254,6 +254,23 @@ def head(page, title, desc, extra_schema=""):
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
+""" + (preview_banner() if PREVIEW else "")
+
+
+def preview_banner():
+    """Shown only on the GitHub Pages preview.
+
+    That URL is public and carries the clinic's name, address, telephone and
+    both physicians' CPSO numbers, so it must never be mistakable for the
+    clinic's own approved website.
+    """
+    return f"""<div class="previewbar" role="note">
+  <div class="previewbar__in">
+    <strong>Design preview</strong> by Vital Sign Digital &mdash; this is not the official website of
+    {S['name']}, and the clinic has not approved it. Details shown here are unconfirmed.
+    For hours and services, telephone <a href="tel:{S['phone_tel']}">{S['phone_display']}</a>.
+  </div>
+</div>
 """
 
 

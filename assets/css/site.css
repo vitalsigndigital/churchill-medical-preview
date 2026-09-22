@@ -176,6 +176,13 @@ hr{border:0; border-top:1px solid var(--line); margin:var(--s-7) 0}
 .status--onDark[data-state="open"]{background:rgba(74,222,161,.18); border-color:rgba(122,235,186,.45); color:#B8F2D8}
 .status--onDark[data-state="closed"]{background:rgba(255,190,120,.16); border-color:rgba(255,200,140,.4); color:#FBD9AE}
 
+/* Preview-only notice bar. Deliberately plain and unbranded so it cannot be
+   mistaken for part of the clinic's design. */
+.previewbar{background:#8A4B14; color:#fff; font-size:.8125rem; line-height:1.45}
+.previewbar__in{max-width:var(--container); margin-inline:auto; padding:10px var(--gutter)}
+.previewbar strong{color:#fff; font-weight:700}
+.previewbar a{color:#fff; text-decoration:underline; font-weight:600; white-space:nowrap}
+
 /* ---------- 6. Header ---------- */
 .header{
   position:sticky; top:0; z-index:var(--z-header);
