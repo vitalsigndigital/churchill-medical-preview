@@ -1,9 +1,9 @@
 # Churchill Medical Clinic — Tasks
 
-**Status:** PACKAGED for HostGator + live preview on GitHub Pages; awaiting domain, form mailbox and hours confirmation
+**Status:** QUOTED — client asked for pricing 2026-09-24; proposal + reply drafted 2026-09-30, awaiting her decision
 **Live URL:** not live. Preview: https://vitalsigndigital.github.io/churchill-medical-preview/ (noindex)
 **Repo:** https://github.com/vitalsigndigital/churchill-medical-preview
-**Last worked:** 2026-09-22
+**Last worked:** 2026-09-30
 
 ## Open
 - [ ] Swap the canonical domain once known: `python set_domain.py therealdomain.ca`. Rewrites canonicals, OG URLs, sitemap, llms.txt, JSON-LD and the `.htaccess` host, then rebuilds and repacks in one pass.
@@ -14,6 +14,8 @@
 - [ ] After launch: re-run the W3C validator and a Lighthouse pass against the live origin (both were run against the local build only).
 
 ## Waiting on client
+- [ ] **Which EMR does the clinic run?** Gates any Cortico/Ocean booking work — both vendors require a supported EMR and it is the first thing either will ask. Cortico supports WELL OscarPro, Flow, OpenOSP, Accuro, Juno, Oscar 19, Profile and others; Ocean supports PS Suite, Med Access, Accuro and OscarPRO only.
+- [ ] **Decision on the quote** — $999 build + Vital Care $199/mo, or $1,499 standalone (both + HST). Sent 2026-09-30.
 - [ ] **Opening hours — blocking for accuracy.** Re-verified live 2026-09-22: Peel 211 (used in the build) says `Mon-Fri 9am-7pm * Sat 9am-3pm * may stop accepting patients 30 minutes prior to closing` and **never mentions Sunday** — its record was last updated **10 Feb 2020**. **Medimap publishes no hours at all.** Doctr's visible page says Mon–Fri 10am–8pm / Sat–Sun 10am–4pm while its own JSON-LD says 9am–5pm every day. Confirm the real hours with the clinic; also confirm Sunday, since the site's "Closed" is our inference from Peel's silence. They appear in `build.py` (`HOURS_ROWS`), `assets/js/site.js` (`HOURS`) and the JSON-LD — all three must match.
 - [ ] Confirm the services list on `services.html` is accurate and complete, and whether anything listed is not actually offered.
 - [ ] **Psychiatry** — Cortico lists the clinic as offering psychiatrist as well as family doctor services. Single source, so it was deliberately left off the site. Confirm before adding.
@@ -26,6 +28,8 @@
 - [ ] Confirm French is or is not spoken (Cortico lists it; CPSO records only English + Arabic + Burmese, so French was excluded).
 
 ## Done
+- [x] 2026-09-30 — **Client asked for pricing.** Madonna emailed three questions (cost, Cortico/Ocean booking, change process). Wrote a 4-page proposal PDF (`Proposal Website/Churchill Medical Clinic/proposal.html` + `render.py`) and a reply that answers all three in the email body rather than making her open the attachment. Priced from the VSD offer ladder: $999 build with Vital Care $199/mo, or $1,499 standalone, both + HST.
+- [x] 2026-09-30 — Researched Cortico and Ocean MD booking integration before quoting. **Both are a link, not a widget** — Cortico's knowledge base says to "forward these links to your web developer" and Ocean explicitly advises against iframe-embedding. So adding booking is genuinely no charge, and because the patient leaves for the vendor's domain, no health information is ever collected on the clinic's site. Published vendor rates recorded: Cortico $86/$119/$199 per provider/month; Ocean $60/schedule/month + $10 advanced booking.
 - [x] 2026-09-22 — **Pitch pack for the owners** in `Proposal Website/Churchill Medical Clinic/`: a 3-page brochure (HTML + PDF via `render.py`) and two email drafts. Ran a 4-lens adversarial audit over both before finalising — substantiation against the source files, live re-verification of the directory claims, CPSO/CASL/advertising compliance, and a buyer-side read. It found 4 blockers in my own drafts, including the fabricated Medimap row.
 - [x] 2026-09-22 — **Caught a fabricated source attribution in my own records.** `PLACEHOLDERS.md` credited Medimap with "Mon–Fri 9am–8pm"; Medimap in fact publishes no hours at all. The figure came from a search-engine summary, not the directory. Re-fetched all three sources live and corrected the register: Peel 211 is a **10 Feb 2020** record that never mentions Sunday, Medimap has no hours, and Doctr's visible page contradicts its own JSON-LD (9am–5pm, seven days). Nothing is attributed to a directory now without having opened it.
 - [x] 2026-09-22 — Re-ran the W3C Nu validator against **all 13 pages** (thank-you.html had been added after the original 12-page run and never validated): 0 errors, 0 warnings.
