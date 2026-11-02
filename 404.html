@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Preview unavailable — Vital Sign Digital</title>
+<style>
+  /* Self-contained on purpose: no webfonts, no CDN, nothing that can break
+     later. This page exists so links already sent out keep resolving. */
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --ink:#070B14; --surface:#0E1626; --line:#1E2A3F;
+    --fg:#F1F5FB; --muted:#A9B6C8;
+    --vital:#22E4A7; --cyan:#4CC9F0;
+    --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:var(--ink); color:var(--fg); font-family:var(--sans);
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; position:relative; overflow-x:hidden;
+  }
+  body::after{
+    content:""; position:absolute; right:-28vw; top:-28vw;
+    width:72vw; height:72vw; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle at 38% 38%,
+      rgba(34,228,167,.20) 0%, rgba(76,201,240,.10) 46%, rgba(7,11,20,0) 72%);
+  }
+  main{
+    position:relative; width:100%; max-width:540px;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:16px; padding:40px 36px;
+  }
+  .brand{display:flex; align-items:center; gap:12px; margin-bottom:28px}
+  .brand svg{width:40px; height:40px; display:block; flex:none}
+  .brand__n{display:block; font-weight:700; font-size:15px; letter-spacing:.06em; text-transform:uppercase; line-height:1.1}
+  .brand__s{display:block; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#8FA8C4; margin-top:3px}
+  h1{font-size:26px; line-height:1.2; letter-spacing:-.02em; margin:0 0 14px; font-weight:650}
+  p{margin:0 0 14px; color:var(--muted)}
+  p:last-of-type{margin-bottom:0}
+  .rule{height:3px; width:72px; border-radius:2px; margin:0 0 24px;
+        background:linear-gradient(90deg,var(--vital),var(--cyan))}
+  .contact{margin-top:28px; padding-top:22px; border-top:1px solid var(--line);
+           display:flex; flex-wrap:wrap; gap:8px 26px; font-size:14px}
+  .contact a{color:var(--vital); text-decoration:none}
+  .contact a:hover,.contact a:focus-visible{text-decoration:underline}
+  .who{margin-top:18px; font-size:13px; color:#7D8CA3}
+  @media (max-width:520px){
+    main{padding:30px 24px; border-radius:14px}
+    h1{font-size:22px}
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="brand">
+    <svg viewBox="0 0 48 48" role="img" aria-label="Vital Sign Digital">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#22E4A7"/><stop offset="1" stop-color="#4CC9F0"/>
+        </linearGradient>
+      </defs>
+      <rect width="48" height="48" rx="12" fill="url(#g)"/>
+      <path d="M4.5 24 h9 l3 -9 4.5 18 4.5 -13.5 3 4.5 h13.5" fill="none"
+            stroke="#07130E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>
+      <span class="brand__n">Vital Sign Digital</span>
+      <span class="brand__s">Mississauga, Ontario</span>
+    </span>
+  </div>
+
+  <h1>This preview has been taken down</h1>
+  <div class="rule"></div>
+
+  <p>The demonstration site that lived at this address is no longer online. The
+  link still works so that anything already sent out doesn&rsquo;t break.</p>
+
+  <p>If you were looking for it, just get in touch &mdash; I&rsquo;m glad to put
+  it back up.</p>
+
+  <div class="contact">
+    <a href="mailto:asfand@vitalsigndigital.com">asfand@vitalsigndigital.com</a>
+    <a href="tel:+16473701555">647-370-1555</a>
+    <a href="https://vitalsigndigital.com">vitalsigndigital.com</a>
+  </div>
+
+  <p class="who">Asfand Khan &middot; Founder, Vital Sign Digital</p>
+
+</main>
+</body>
+</html>
